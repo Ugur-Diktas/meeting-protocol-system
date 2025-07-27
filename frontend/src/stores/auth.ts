@@ -16,6 +16,7 @@ interface AuthState {
   token: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  error: string | null;
 }
 
 export const useAuthStore = defineStore('auth', {
@@ -23,7 +24,8 @@ export const useAuthStore = defineStore('auth', {
     user: null,
     token: localStorage.getItem('token'),
     isAuthenticated: false,
-    isLoading: false
+    isLoading: false,
+    error: null,
   }),
 
   getters: {
@@ -38,6 +40,7 @@ export const useAuthStore = defineStore('auth', {
       const toast = useToast();
       const { t } = useI18n();
       this.isLoading = true;
+      this.error = null
 
       try {
         const response = await authService.register(userData);
@@ -86,6 +89,7 @@ export const useAuthStore = defineStore('auth', {
 
         return response;
       } catch (error: any) {
+        this.error = error.response?.data?.error || 'Login failed'
         const errorMessage = error.response?.data?.error || 'Login failed';
         const errorDetails = error.response?.data?.details;
         toast.error('Login Error', errorDetails ? `${errorMessage}: ${errorDetails}` : errorMessage);
