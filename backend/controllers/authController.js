@@ -57,6 +57,12 @@ const register = async (req, res) => {
       });
     }
 
+    // Check if email confirmation is required
+    if (authData.user && !authData.session) {
+      console.log('Email confirmation required for:', email);
+      // For development, we'll proceed anyway
+    }
+
     // Get group if code provided
     let groupId = null;
     if (groupCode) {
@@ -123,6 +129,8 @@ const login = async (req, res) => {
       });
     }
 
+    console.log('Login attempt for email:', email);
+
     // Sign in with Supabase Auth
     const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
       email,
@@ -130,8 +138,10 @@ const login = async (req, res) => {
     });
 
     if (authError) {
+      console.error('Supabase auth error:', authError);
       return res.status(401).json({ 
-        error: 'Invalid email or password' 
+        error: 'Invalid email or password',
+        details: authError.message 
       });
     }
 
@@ -143,6 +153,7 @@ const login = async (req, res) => {
       .single();
 
     if (userError || !user) {
+      console.error('User profile error:', userError);
       return res.status(404).json({ 
         error: 'User profile not found' 
       });
@@ -150,6 +161,8 @@ const login = async (req, res) => {
 
     // Generate JWT token
     const token = generateToken(user.id);
+
+    console.log('Login successful for:', email);
 
     res.json({
       message: 'Login successful',

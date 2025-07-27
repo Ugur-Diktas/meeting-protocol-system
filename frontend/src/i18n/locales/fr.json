@@ -1,0 +1,110 @@
+{
+  "common": {
+    "appName": "Protocoles de Réunion",
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "register": "S'inscrire",
+    "dashboard": "Tableau de bord",
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "loading": "Chargement...",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "create": "Créer",
+    "back": "Retour",
+    "language": "Langue"
+  },
+  "home": {
+    "title": "Protocoles de Réunion",
+    "subtitle": "Système de Gestion Interne",
+    "description": "Ce système a été développé pour gérer et documenter efficacement nos protocoles de réunion.",
+    "whatIsThis": "Qu'est-ce que c'est?",
+    "whatIsThisText": "Il s'agit d'un outil interne pour notre organisation pour gérer les protocoles de réunion. Il nous permet de documenter les réunions, suivre les tâches et retracer les décisions.",
+    "howItWorks": "Comment ça fonctionne?",
+    "features": {
+      "title": "Fonctionnalités Principales",
+      "protocols": {
+        "title": "Gestion des Protocoles",
+        "description": "Créez et gérez des protocoles de réunion structurés avec toutes les informations importantes."
+      },
+      "collaboration": {
+        "title": "Collaboration en Temps Réel",
+        "description": "Plusieurs personnes peuvent travailler sur un protocole simultanément et voir les changements en temps réel."
+      },
+      "archive": {
+        "title": "Archive des Protocoles",
+        "description": "Tous les protocoles sont stockés en toute sécurité et peuvent être recherchés et récupérés à tout moment."
+      },
+      "tasks": {
+        "title": "Gestion des Tâches",
+        "description": "Suivez les tâches et les responsabilités directement depuis les protocoles de réunion."
+      },
+      "export": {
+        "title": "Export PDF",
+        "description": "Exportez les protocoles sous forme de documents PDF professionnels pour l'archivage."
+      },
+      "groups": {
+        "title": "Gestion des Groupes",
+        "description": "Organisez les membres en groupes avec différents droits d'accès."
+      }
+    },
+    "getStarted": "Premiers Pas",
+    "loginPrompt": "Connectez-vous avec votre compte d'organisation pour accéder au système.",
+    "noAccount": "Pas encore de compte? Contactez l'administration pour obtenir des identifiants."
+  },
+  "auth": {
+    "login": {
+      "title": "Connexion",
+      "subtitle": "Bon retour",
+      "email": "Adresse e-mail",
+      "password": "Mot de passe",
+      "submit": "Se connecter",
+      "forgotPassword": "Mot de passe oublié?",
+      "noAccount": "Pas de compte?",
+      "createAccount": "Créer un compte"
+    },
+    "register": {
+      "title": "Créer un Compte",
+      "subtitle": "Inscription pour les nouveaux membres",
+      "name": "Nom complet",
+      "email": "Adresse e-mail",
+      "password": "Mot de passe",
+      "passwordHint": "Au moins 6 caractères",
+      "groupCode": "Code de Groupe (Optionnel)",
+      "groupCodeHint": "Si vous avez un code de groupe, entrez-le ici",
+      "submit": "S'inscrire",
+      "hasAccount": "Déjà un compte?",
+      "loginInstead": "Se connecter",
+      "terms": "En vous inscrivant, vous acceptez nos conditions d'utilisation internes"
+    }
+  },
+  "dashboard": {
+    "welcome": "Bon retour, {name}!",
+    "noGroup": {
+      "title": "Aucune Appartenance à un Groupe",
+      "description": "Vous devez rejoindre ou créer un groupe pour gérer les protocoles de réunion.",
+      "action": "Rejoindre ou créer un groupe"
+    },
+    "quickActions": {
+      "title": "Actions Rapides",
+      "newProtocol": {
+        "title": "Nouveau Protocole",
+        "description": "Créer un nouveau protocole de réunion"
+      },
+      "viewProtocols": {
+        "title": "Tous les Protocoles",
+        "description": "Parcourir et gérer l'archive des protocoles"
+      },
+      "manageTeam": {
+        "title": "Gérer l'Équipe",
+        "description": "Gérer les membres du groupe et les paramètres"
+      }
+    },
+    "recentActivity": {
+      "title": "Activité Récente",
+      "empty": "Aucune activité pour le moment. Créez votre premier protocole!"
+    }
+  }
+}

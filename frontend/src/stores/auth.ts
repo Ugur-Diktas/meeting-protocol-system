@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia';
 import { authService } from '@/services/auth';
 import router from '@/router';
+import { useToast } from '@/composables/useToast';
+import { useI18n } from 'vue-i18n';
 import type {
   User,
   LoginCredentials,
@@ -14,7 +16,6 @@ interface AuthState {
   token: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  error: string | null;
 }
 
 export const useAuthStore = defineStore('auth', {
@@ -22,8 +23,7 @@ export const useAuthStore = defineStore('auth', {
     user: null,
     token: localStorage.getItem('token'),
     isAuthenticated: false,
-    isLoading: false,
-    error: null
+    isLoading: false
   }),
 
   getters: {
@@ -35,8 +35,9 @@ export const useAuthStore = defineStore('auth', {
 
   actions: {
     async register(userData: RegisterData) {
+      const toast = useToast();
+      const { t } = useI18n();
       this.isLoading = true;
-      this.error = null;
 
       try {
         const response = await authService.register(userData);
@@ -48,12 +49,15 @@ export const useAuthStore = defineStore('auth', {
         // Save token to localStorage
         localStorage.setItem('token', response.token);
 
+        toast.success(t('common.register'), 'Account created successfully!');
+
         // Redirect to dashboard
         router.push('/dashboard');
 
         return response;
       } catch (error: any) {
-        this.error = error.response?.data?.error || 'Registration failed';
+        const errorMessage = error.response?.data?.error || 'Registration failed';
+        toast.error('Registration Error', errorMessage);
         throw error;
       } finally {
         this.isLoading = false;
@@ -61,8 +65,9 @@ export const useAuthStore = defineStore('auth', {
     },
 
     async login(credentials: LoginCredentials) {
+      const toast = useToast();
+      const { t } = useI18n();
       this.isLoading = true;
-      this.error = null;
 
       try {
         const response = await authService.login(credentials);
@@ -74,12 +79,16 @@ export const useAuthStore = defineStore('auth', {
         // Save token to localStorage
         localStorage.setItem('token', response.token);
 
+        toast.success(t('common.login'), 'Welcome back!');
+
         // Redirect to dashboard
         router.push('/dashboard');
 
         return response;
       } catch (error: any) {
-        this.error = error.response?.data?.error || 'Login failed';
+        const errorMessage = error.response?.data?.error || 'Login failed';
+        const errorDetails = error.response?.data?.details;
+        toast.error('Login Error', errorDetails ? `${errorMessage}: ${errorDetails}` : errorMessage);
         throw error;
       } finally {
         this.isLoading = false;
@@ -102,15 +111,17 @@ export const useAuthStore = defineStore('auth', {
     },
 
     async updateProfile(profileData: UpdateProfileData) {
+      const toast = useToast();
       this.isLoading = true;
-      this.error = null;
 
       try {
         const response = await authService.updateProfile(profileData);
         this.user = response.user;
+        toast.success('Profile Updated', 'Your profile has been updated successfully.');
         return response;
       } catch (error: any) {
-        this.error = error.response?.data?.error || 'Update failed';
+        const errorMessage = error.response?.data?.error || 'Update failed';
+        toast.error('Update Error', errorMessage);
         throw error;
       } finally {
         this.isLoading = false;
@@ -118,14 +129,16 @@ export const useAuthStore = defineStore('auth', {
     },
 
     async changePassword(passwordData: ChangePasswordData) {
+      const toast = useToast();
       this.isLoading = true;
-      this.error = null;
 
       try {
         const response = await authService.changePassword(passwordData);
+        toast.success('Password Changed', 'Your password has been changed successfully.');
         return response;
       } catch (error: any) {
-        this.error = error.response?.data?.error || 'Password change failed';
+        const errorMessage = error.response?.data?.error || 'Password change failed';
+        toast.error('Password Error', errorMessage);
         throw error;
       } finally {
         this.isLoading = false;
@@ -133,6 +146,9 @@ export const useAuthStore = defineStore('auth', {
     },
 
     async logout() {
+      const toast = useToast();
+      const { t } = useI18n();
+
       try {
         await authService.logout();
       } catch (error) {
@@ -142,18 +158,15 @@ export const useAuthStore = defineStore('auth', {
         this.user = null;
         this.token = null;
         this.isAuthenticated = false;
-        this.error = null;
 
         // Clear localStorage
         localStorage.removeItem('token');
 
+        toast.info(t('common.logout'), 'You have been logged out.');
+
         // Redirect to login
         router.push('/login');
       }
-    },
-
-    clearError() {
-      this.error = null;
     }
   }
 });

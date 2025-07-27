@@ -1,0 +1,110 @@
+{
+  "common": {
+    "appName": "Meeting Protocols",
+    "login": "Login",
+    "logout": "Logout",
+    "register": "Register",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "settings": "Settings",
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "back": "Back",
+    "language": "Language"
+  },
+  "home": {
+    "title": "Meeting Protocols",
+    "subtitle": "Internal Management System",
+    "description": "This system was developed to efficiently manage and document our meeting protocols.",
+    "whatIsThis": "What is this?",
+    "whatIsThisText": "This is an internal tool for our organization to manage meeting protocols. It allows us to document meetings, track tasks, and trace decisions.",
+    "howItWorks": "How does it work?",
+    "features": {
+      "title": "Main Features",
+      "protocols": {
+        "title": "Protocol Management",
+        "description": "Create and manage structured meeting protocols with all important information."
+      },
+      "collaboration": {
+        "title": "Real-time Collaboration",
+        "description": "Multiple people can work on a protocol simultaneously and see changes in real-time."
+      },
+      "archive": {
+        "title": "Protocol Archive",
+        "description": "All protocols are securely stored and can be searched and retrieved at any time."
+      },
+      "tasks": {
+        "title": "Task Management",
+        "description": "Track tasks and responsibilities directly from meeting protocols."
+      },
+      "export": {
+        "title": "PDF Export",
+        "description": "Export protocols as professional PDF documents for archiving."
+      },
+      "groups": {
+        "title": "Group Management",
+        "description": "Organize members into groups with different access rights."
+      }
+    },
+    "getStarted": "Getting Started",
+    "loginPrompt": "Log in with your organization account to access the system.",
+    "noAccount": "No account yet? Contact administration for access credentials."
+  },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "subtitle": "Welcome back",
+      "email": "Email address",
+      "password": "Password",
+      "submit": "Sign in",
+      "forgotPassword": "Forgot password?",
+      "noAccount": "Don't have an account?",
+      "createAccount": "Create account"
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Registration for new members",
+      "name": "Full Name",
+      "email": "Email address",
+      "password": "Password",
+      "passwordHint": "At least 6 characters",
+      "groupCode": "Group Code (Optional)",
+      "groupCodeHint": "If you have a group code, enter it here",
+      "submit": "Register",
+      "hasAccount": "Already have an account?",
+      "loginInstead": "Sign in instead",
+      "terms": "By registering, you accept our internal terms of use"
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome back, {name}!",
+    "noGroup": {
+      "title": "No Group Membership",
+      "description": "You need to join or create a group to manage meeting protocols.",
+      "action": "Join or create group"
+    },
+    "quickActions": {
+      "title": "Quick Actions",
+      "newProtocol": {
+        "title": "New Protocol",
+        "description": "Create a new meeting protocol"
+      },
+      "viewProtocols": {
+        "title": "All Protocols",
+        "description": "Browse and manage protocol archive"
+      },
+      "manageTeam": {
+        "title": "Manage Team",
+        "description": "Manage group members and settings"
+      }
+    },
+    "recentActivity": {
+      "title": "Recent Activity",
+      "empty": "No activity yet. Create your first protocol!"
+    }
+  }
+}

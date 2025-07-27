@@ -1,0 +1,110 @@
+{
+  "common": {
+    "appName": "Sitzungsprotokolle",
+    "login": "Anmelden",
+    "logout": "Abmelden",
+    "register": "Registrieren",
+    "dashboard": "Dashboard",
+    "profile": "Profil",
+    "settings": "Einstellungen",
+    "loading": "Laden...",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "create": "Erstellen",
+    "back": "Zurück",
+    "language": "Sprache"
+  },
+  "home": {
+    "title": "Sitzungsprotokolle",
+    "subtitle": "Internes Verwaltungssystem",
+    "description": "Dieses System wurde entwickelt, um unsere Sitzungsprotokolle effizient zu verwalten und zu dokumentieren.",
+    "whatIsThis": "Was ist das?",
+    "whatIsThisText": "Dies ist ein internes Tool für unsere Organisation zur Verwaltung von Sitzungsprotokollen. Es ermöglicht uns, Sitzungen zu dokumentieren, Aufgaben zu verfolgen und Entscheidungen nachzuvollziehen.",
+    "howItWorks": "Wie funktioniert es?",
+    "features": {
+      "title": "Hauptfunktionen",
+      "protocols": {
+        "title": "Protokollverwaltung",
+        "description": "Erstellen und verwalten Sie strukturierte Sitzungsprotokolle mit allen wichtigen Informationen."
+      },
+      "collaboration": {
+        "title": "Echtzeit-Zusammenarbeit",
+        "description": "Mehrere Personen können gleichzeitig an einem Protokoll arbeiten und Änderungen in Echtzeit sehen."
+      },
+      "archive": {
+        "title": "Protokollarchiv",
+        "description": "Alle Protokolle werden sicher gespeichert und sind jederzeit durchsuchbar und abrufbar."
+      },
+      "tasks": {
+        "title": "Aufgabenverwaltung",
+        "description": "Verfolgen Sie Aufgaben und Verantwortlichkeiten direkt aus den Sitzungsprotokollen."
+      },
+      "export": {
+        "title": "PDF-Export",
+        "description": "Exportieren Sie Protokolle als professionelle PDF-Dokumente für die Archivierung."
+      },
+      "groups": {
+        "title": "Gruppenverwaltung",
+        "description": "Organisieren Sie Mitglieder in Gruppen mit unterschiedlichen Zugriffsrechten."
+      }
+    },
+    "getStarted": "Erste Schritte",
+    "loginPrompt": "Melden Sie sich mit Ihrem Organisationskonto an, um auf das System zuzugreifen.",
+    "noAccount": "Noch kein Konto? Kontaktieren Sie die Verwaltung für Zugangsdaten."
+  },
+  "auth": {
+    "login": {
+      "title": "Anmelden",
+      "subtitle": "Willkommen zurück",
+      "email": "E-Mail-Adresse",
+      "password": "Passwort",
+      "submit": "Anmelden",
+      "forgotPassword": "Passwort vergessen?",
+      "noAccount": "Noch kein Konto?",
+      "createAccount": "Konto erstellen"
+    },
+    "register": {
+      "title": "Konto erstellen",
+      "subtitle": "Registrierung für neue Mitglieder",
+      "name": "Vollständiger Name",
+      "email": "E-Mail-Adresse",
+      "password": "Passwort",
+      "passwordHint": "Mindestens 6 Zeichen",
+      "groupCode": "Gruppencode (Optional)",
+      "groupCodeHint": "Falls Sie einen Gruppencode haben, geben Sie ihn hier ein",
+      "submit": "Registrieren",
+      "hasAccount": "Bereits ein Konto?",
+      "loginInstead": "Stattdessen anmelden",
+      "terms": "Mit der Registrierung akzeptieren Sie unsere internen Nutzungsbedingungen"
+    }
+  },
+  "dashboard": {
+    "welcome": "Willkommen zurück, {name}!",
+    "noGroup": {
+      "title": "Keine Gruppenmitgliedschaft",
+      "description": "Sie müssen einer Gruppe beitreten oder eine erstellen, um Sitzungsprotokolle zu verwalten.",
+      "action": "Gruppe beitreten oder erstellen"
+    },
+    "quickActions": {
+      "title": "Schnellzugriff",
+      "newProtocol": {
+        "title": "Neues Protokoll",
+        "description": "Ein neues Sitzungsprotokoll erstellen"
+      },
+      "viewProtocols": {
+        "title": "Alle Protokolle",
+        "description": "Protokollarchiv durchsuchen und verwalten"
+      },
+      "manageTeam": {
+        "title": "Team verwalten",
+        "description": "Gruppenmitglieder und Einstellungen verwalten"
+      }
+    },
+    "recentActivity": {
+      "title": "Letzte Aktivitäten",
+      "empty": "Noch keine Aktivitäten. Erstellen Sie Ihr erstes Protokoll!"
+    }
+  }
+}

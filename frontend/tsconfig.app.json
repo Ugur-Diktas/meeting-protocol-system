@@ -30,7 +30,7 @@
     },
 
     /* Vue specific */
-    "allowJs": true,
+    "allowJs": false,
     "verbatimModuleSyntax": true,
 
     "types": [

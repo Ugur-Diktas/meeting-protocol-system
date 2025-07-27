@@ -1,0 +1,110 @@
+{
+  "common": {
+    "appName": "Protocolli di Riunione",
+    "login": "Accedi",
+    "logout": "Esci",
+    "register": "Registrati",
+    "dashboard": "Pannello di controllo",
+    "profile": "Profilo",
+    "settings": "Impostazioni",
+    "loading": "Caricamento...",
+    "save": "Salva",
+    "cancel": "Annulla",
+    "delete": "Elimina",
+    "edit": "Modifica",
+    "create": "Crea",
+    "back": "Indietro",
+    "language": "Lingua"
+  },
+  "home": {
+    "title": "Protocolli di Riunione",
+    "subtitle": "Sistema di Gestione Interno",
+    "description": "Questo sistema è stato sviluppato per gestire e documentare efficacemente i nostri protocolli di riunione.",
+    "whatIsThis": "Cos'è questo?",
+    "whatIsThisText": "Questo è uno strumento interno per la nostra organizzazione per gestire i protocolli delle riunioni. Ci permette di documentare le riunioni, monitorare i compiti e tracciare le decisioni.",
+    "howItWorks": "Come funziona?",
+    "features": {
+      "title": "Funzionalità Principali",
+      "protocols": {
+        "title": "Gestione Protocolli",
+        "description": "Crea e gestisci protocolli di riunione strutturati con tutte le informazioni importanti."
+      },
+      "collaboration": {
+        "title": "Collaborazione in Tempo Reale",
+        "description": "Più persone possono lavorare su un protocollo simultaneamente e vedere le modifiche in tempo reale."
+      },
+      "archive": {
+        "title": "Archivio Protocolli",
+        "description": "Tutti i protocolli sono archiviati in modo sicuro e possono essere cercati e recuperati in qualsiasi momento."
+      },
+      "tasks": {
+        "title": "Gestione Attività",
+        "description": "Traccia le attività e le responsabilità direttamente dai protocolli delle riunioni."
+      },
+      "export": {
+        "title": "Esportazione PDF",
+        "description": "Esporta i protocolli come documenti PDF professionali per l'archiviazione."
+      },
+      "groups": {
+        "title": "Gestione Gruppi",
+        "description": "Organizza i membri in gruppi con diversi diritti di accesso."
+      }
+    },
+    "getStarted": "Per Iniziare",
+    "loginPrompt": "Accedi con il tuo account dell'organizzazione per accedere al sistema.",
+    "noAccount": "Non hai ancora un account? Contatta l'amministrazione per le credenziali di accesso."
+  },
+  "auth": {
+    "login": {
+      "title": "Accedi",
+      "subtitle": "Bentornato",
+      "email": "Indirizzo email",
+      "password": "Password",
+      "submit": "Accedi",
+      "forgotPassword": "Password dimenticata?",
+      "noAccount": "Non hai un account?",
+      "createAccount": "Crea un account"
+    },
+    "register": {
+      "title": "Crea Account",
+      "subtitle": "Registrazione per nuovi membri",
+      "name": "Nome completo",
+      "email": "Indirizzo email",
+      "password": "Password",
+      "passwordHint": "Almeno 6 caratteri",
+      "groupCode": "Codice Gruppo (Opzionale)",
+      "groupCodeHint": "Se hai un codice gruppo, inseriscilo qui",
+      "submit": "Registrati",
+      "hasAccount": "Hai già un account?",
+      "loginInstead": "Accedi invece",
+      "terms": "Registrandoti, accetti i nostri termini di utilizzo interni"
+    }
+  },
+  "dashboard": {
+    "welcome": "Bentornato, {name}!",
+    "noGroup": {
+      "title": "Nessuna Appartenenza a Gruppi",
+      "description": "Devi unirti o creare un gruppo per gestire i protocolli delle riunioni.",
+      "action": "Unisciti o crea un gruppo"
+    },
+    "quickActions": {
+      "title": "Azioni Rapide",
+      "newProtocol": {
+        "title": "Nuovo Protocollo",
+        "description": "Crea un nuovo protocollo di riunione"
+      },
+      "viewProtocols": {
+        "title": "Tutti i Protocolli",
+        "description": "Sfoglia e gestisci l'archivio protocolli"
+      },
+      "manageTeam": {
+        "title": "Gestisci Team",
+        "description": "Gestisci i membri del gruppo e le impostazioni"
+      }
+    },
+    "recentActivity": {
+      "title": "Attività Recente",
+      "empty": "Nessuna attività ancora. Crea il tuo primo protocollo!"
+    }
+  }
+}

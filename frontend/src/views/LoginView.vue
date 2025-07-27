@@ -5,21 +5,21 @@
       <div class="max-w-md w-full space-y-8">
         <div>
           <router-link to="/" class="flex items-center justify-center space-x-3 mb-8">
-            <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+            <div class="w-10 h-10 bg-brand-red rounded-lg flex items-center justify-center">
               <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             </div>
-            <span class="text-xl font-bold text-gray-900">Meeting Protocol</span>
+            <span class="text-xl font-bold text-gray-900">{{ $t('common.appName') }}</span>
           </router-link>
 
           <h2 class="text-center text-3xl font-extrabold text-gray-900">
-            Welcome back
+            {{ $t('auth.login.subtitle') }}
           </h2>
           <p class="mt-2 text-center text-sm text-gray-600">
-            Or
-            <router-link to="/register" class="font-medium text-indigo-600 hover:text-indigo-500 ml-1">
-              create a new account
+            {{ $t('auth.login.noAccount') }}
+            <router-link to="/register" class="font-medium text-brand-red hover:text-brand-red-dark ml-1">
+              {{ $t('auth.login.createAccount') }}
             </router-link>
           </p>
         </div>
@@ -32,7 +32,7 @@
           <div class="space-y-5">
             <div>
               <label for="email" class="block text-sm font-medium text-gray-700">
-                Email address
+                {{ $t('auth.login.email') }}
               </label>
               <input
                 id="email"
@@ -41,14 +41,14 @@
                 type="email"
                 autocomplete="email"
                 required
-                class="mt-1 appearance-none relative block w-full px-3 py-3 border border-gray-300 rounded-lg placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent sm:text-sm transition-colors"
+                class="mt-1 appearance-none relative block w-full px-3 py-3 border border-gray-300 rounded-lg placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand-red focus:border-transparent sm:text-sm transition-colors"
                 placeholder="you@example.com"
               />
             </div>
 
             <div>
               <label for="password" class="block text-sm font-medium text-gray-700">
-                Password
+                {{ $t('auth.login.password') }}
               </label>
               <input
                 id="password"
@@ -57,7 +57,7 @@
                 type="password"
                 autocomplete="current-password"
                 required
-                class="mt-1 appearance-none relative block w-full px-3 py-3 border border-gray-300 rounded-lg placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent sm:text-sm transition-colors"
+                class="mt-1 appearance-none relative block w-full px-3 py-3 border border-gray-300 rounded-lg placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand-red focus:border-transparent sm:text-sm transition-colors"
                 placeholder="••••••••"
               />
             </div>
@@ -67,17 +67,17 @@
             <button
               type="submit"
               :disabled="isLoading"
-              class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transform transition-all hover:scale-[1.02]"
+              class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-brand-red hover:bg-brand-red-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-red disabled:opacity-50 disabled:cursor-not-allowed transform transition-all hover:scale-[1.02]"
             >
-              <span v-if="isLoading">Signing in...</span>
-              <span v-else>Sign in</span>
+              <span v-if="isLoading">{{ $t('common.loading') }}</span>
+              <span v-else>{{ $t('auth.login.submit') }}</span>
             </button>
           </div>
 
           <div class="flex items-center justify-between">
             <div class="text-sm">
-              <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
-                Forgot your password?
+              <a href="#" class="font-medium text-brand-red hover:text-brand-red-dark">
+                {{ $t('auth.login.forgotPassword') }}
               </a>
             </div>
           </div>
@@ -85,14 +85,14 @@
       </div>
     </div>
 
-    <!-- Right side - Image/Pattern -->
-    <div class="hidden lg:block relative w-0 flex-1 bg-gradient-to-br from-indigo-500 to-purple-600">
-      <div class="absolute inset-0 bg-gradient-to-br from-indigo-600/90 to-purple-700/90"></div>
+    <!-- Right side - Branding -->
+    <div class="hidden lg:block relative w-0 flex-1 bg-brand-red">
+      <div class="absolute inset-0 bg-gradient-to-br from-brand-red to-brand-red-dark"></div>
       <div class="absolute inset-0 flex items-center justify-center p-12">
         <div class="max-w-md text-center">
-          <h3 class="text-4xl font-bold text-white mb-6">Transform Your Meetings</h3>
-          <p class="text-xl text-indigo-100">
-            Join thousands of teams who have made their meetings more productive and organized.
+          <h3 class="text-4xl font-bold text-white mb-6">{{ $t('common.appName') }}</h3>
+          <p class="text-xl text-white opacity-90">
+            {{ $t('home.subtitle') }}
           </p>
         </div>
       </div>
