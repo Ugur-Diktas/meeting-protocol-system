@@ -4,7 +4,7 @@ const { verifyToken, extractToken } = require('../utils/auth');
 // Initialize Supabase client
 const supabase = createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY
+  process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY
 );
 
 // Middleware to verify JWT token

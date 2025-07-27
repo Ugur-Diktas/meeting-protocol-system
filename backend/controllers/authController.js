@@ -1,10 +1,11 @@
+require('dotenv').config();
 const { createClient } = require('@supabase/supabase-js');
 const { generateToken, hashPassword, comparePassword } = require('../utils/auth');
 
 // Initialize Supabase client
 const supabase = createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY
+  process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY
 );
 
 // Register new user
@@ -285,8 +286,15 @@ const changePassword = async (req, res) => {
 // Logout (optional - mainly for token blacklisting if needed)
 const logout = async (req, res) => {
   try {
+    // Logout should be idempotent - it succeeds even without authentication
     // In a production app, you might want to blacklist the token here
-    // For now, we'll just return success
+    
+    // If user is authenticated, you could do additional cleanup
+    if (req.user) {
+      // Optional: Log the logout event, clear sessions, etc.
+      console.log(`User ${req.user.email} logged out`);
+    }
+    
     res.json({
       message: 'Logged out successfully'
     });
