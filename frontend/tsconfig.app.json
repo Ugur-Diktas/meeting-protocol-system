@@ -31,6 +31,10 @@
 
     /* Vue specific */
     "allowJs": true,
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": true,
+
+    "types": [
+      "vite/client"
+    ]
   }
 }
