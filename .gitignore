@@ -17,6 +17,9 @@ dist/
 .env.test.local
 .env.production.local
 
+backend/.env.test
+frontend/.env.development
+
 # Logs
 npm-debug.log*
 yarn-debug.log*
