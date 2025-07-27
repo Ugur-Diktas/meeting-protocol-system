@@ -1,0 +1,18 @@
+{
+  "folders": [
+    {
+      "path": "frontend",
+      "name": "Frontend (Vue)"
+    },
+    {
+      "path": "backend", 
+      "name": "Backend (Node)"
+    }
+  ],
+  "settings": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    }
+  }
+}
