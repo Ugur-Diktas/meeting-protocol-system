@@ -1,7 +1,6 @@
-// __tests__/helpers/testAuth.js - Enhanced Test Auth Helper
+// __tests__/helpers/testAuth.js - Test Auth Helper
 const crypto = require('crypto');
 const { supabase } = require('../../models');
-const logger = require('./logger');
 
 // Generate UUID v4 without external dependency
 function generateUUID() {
@@ -27,7 +26,6 @@ class TestAuthHelper {
         .single();
       
       if (existingUser) {
-        logger.debug('User already exists, returning existing user', { email });
         return existingUser;
       }
       
@@ -47,15 +45,14 @@ class TestAuthHelper {
         .single();
       
       if (error) {
-        logger.error('Error creating test user directly:', error);
+        console.error('Error creating test user directly:', error);
         throw error;
       }
       
-      logger.debug('Test user created directly', { userId: user.id, email });
       return user;
       
     } catch (error) {
-      logger.error('Failed to create test user directly:', error);
+      console.error('Failed to create test user directly:', error);
       throw error;
     }
   }
@@ -94,7 +91,6 @@ class TestAuthHelper {
           .single();
         
         if (!profileError && profile) {
-          logger.debug('Test user created via Supabase Auth', { userId: profile.id, email });
           return profile;
         }
         
@@ -110,9 +106,7 @@ class TestAuthHelper {
         }
       }
     } catch (authError) {
-      logger.debug('Supabase Auth strategy failed, trying next strategy', { 
-        error: authError.message 
-      });
+      // Auth strategy failed, continue to next strategy
     }
 
     // Strategy 2: Direct database insert with valid UUID
@@ -126,9 +120,7 @@ class TestAuthHelper {
         return directUser;
       }
     } catch (directError) {
-      logger.debug('Direct insert strategy failed', { 
-        error: directError.message 
-      });
+      // Direct insert failed, continue
     }
 
     // Strategy 3: Use existing user if email already exists
@@ -140,7 +132,6 @@ class TestAuthHelper {
         .single();
       
       if (existingUser) {
-        logger.debug('Returning existing user', { userId: existingUser.id, email });
         return existingUser;
       }
     } catch (error) {
@@ -152,11 +143,6 @@ class TestAuthHelper {
     const fallbackUser = await this.createTestUserDirect({
       ...userData,
       email: fallbackEmail
-    });
-    
-    logger.warn('Used fallback strategy for user creation', { 
-      originalEmail: email,
-      fallbackEmail 
     });
     
     return fallbackUser;
@@ -193,10 +179,6 @@ class TestAuthHelper {
       }
     }
     
-    if (errors.length > 0) {
-      logger.warn(`Created ${users.length}/${count} users, ${errors.length} failed`);
-    }
-    
     return { users, errors };
   }
 
@@ -218,11 +200,10 @@ class TestAuthHelper {
         .or(patterns.join(','));
       
       if (!testUsers || testUsers.length === 0) {
-        logger.debug('No test users to clean up');
         return;
       }
       
-      logger.info(`Cleaning up ${testUsers.length} test users`);
+      console.log(`Cleaning up ${testUsers.length} test users`);
       
       // Delete in batches to avoid timeout
       const batchSize = 50;
@@ -236,17 +217,15 @@ class TestAuthHelper {
           .in('id', ids);
         
         if (error) {
-          logger.error(`Error deleting user batch ${i / batchSize + 1}:`, error);
+          console.error(`Error deleting user batch ${i / batchSize + 1}:`, error);
         }
       }
-      
-      logger.info('Test user cleanup completed');
       
       // Try to clean up from Supabase Auth (if we have admin access)
       await this.cleanupAuthUsers(testUsers);
       
     } catch (error) {
-      logger.error('User cleanup error:', error);
+      console.error('User cleanup error:', error);
       // Don't throw - cleanup should not fail tests
     }
   }
@@ -274,11 +253,8 @@ class TestAuthHelper {
         }
       }
       
-      logger.debug(`Cleaned up ${testAuthUsers.length} users from Auth`);
-      
     } catch (error) {
       // Admin API might not be available, this is not critical
-      logger.debug('Could not clean up Auth users (admin API not available)');
     }
   }
   

@@ -295,7 +295,7 @@ const deleteTask = async (req, res) => {
     }
 
     // Only creator or assigned user can delete
-    if (existing.created_by !== req.user.id && existing.assigned_to !== req.user.id) {
+    if (existing.created_by?.id !== req.user.id && existing.assigned_to?.id !== req.user.id) {
       return res.status(403).json({ 
         error: 'Only the creator or assigned user can delete this task' 
       });

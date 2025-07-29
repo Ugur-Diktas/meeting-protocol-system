@@ -4,45 +4,76 @@
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-echo -e "${GREEN}🧪 Meeting Protocol System - Backend Tests${NC}"
+# Default to running all tests
+TEST_TARGET="$1"
+
+echo -e "${BLUE}🧪 Meeting Protocol System - Test Runner${NC}"
 echo ""
 
-# Check if .env.test exists
+# Check environment file
 if [ ! -f ".env.test" ]; then
     echo -e "${RED}❌ Error: .env.test file not found!${NC}"
-    echo ""
-    echo "Please create .env.test with your test configuration:"
-    echo "1. Copy .env to .env.test"
-    echo "2. Update PORT to 3002"
-    echo "3. Update JWT_SECRET to a test value"
-    echo ""
-    exit 1
+    echo -e "${YELLOW}Creating .env.test from .env...${NC}"
+    
+    if [ -f ".env" ]; then
+        cp .env .env.test
+        sed -i.bak 's/PORT=.*/PORT=3002/' .env.test
+        rm .env.test.bak
+        echo -e "${GREEN}✅ Created .env.test${NC}"
+    else
+        echo -e "${RED}❌ No .env file found to copy${NC}"
+        exit 1
+    fi
 fi
 
-# Check if .env.test has required variables
-if ! grep -q "SUPABASE_URL=" .env.test || [ $(grep "SUPABASE_URL=your_supabase_url_here" .env.test | wc -l) -gt 0 ]; then
-    echo -e "${YELLOW}⚠️  Warning: .env.test is missing Supabase configuration${NC}"
-    echo ""
-    echo "Please update .env.test with your actual Supabase credentials:"
-    echo "- SUPABASE_URL"
-    echo "- SUPABASE_ANON_KEY"
-    echo "- SUPABASE_SERVICE_KEY"
-    echo ""
-    exit 1
-fi
-
-# Kill any process on port 3001 or 3002
-echo "Checking for processes on test ports..."
-lsof -ti:3001 | xargs kill -9 2>/dev/null
-lsof -ti:3002 | xargs kill -9 2>/dev/null
+# Kill any processes on test ports
+echo "Cleaning up test ports..."
+lsof -ti:3001,3002 2>/dev/null | xargs kill -9 2>/dev/null || true
 
 # Set test environment
 export NODE_ENV=test
 
-# Run tests
-echo -e "${GREEN}Running tests...${NC}"
-echo ""
+# Clear previous test logs
+rm -rf __tests__/logs 2>/dev/null || true
 
-npm test "$@"
+# Function to run tests
+run_tests() {
+    if [ -z "$TEST_TARGET" ]; then
+        echo -e "${GREEN}Running all tests...${NC}"
+        npm test
+    elif [ "$TEST_TARGET" == "watch" ]; then
+        echo -e "${GREEN}Running tests in watch mode...${NC}"
+        npm run test:watch
+    elif [ "$TEST_TARGET" == "coverage" ]; then
+        echo -e "${GREEN}Running tests with coverage...${NC}"
+        npm run test:coverage
+    else
+        # Run specific test file
+        if [[ "$TEST_TARGET" == *.js ]]; then
+            TEST_FILE="$TEST_TARGET"
+        else
+            TEST_FILE="__tests__/${TEST_TARGET}.test.js"
+        fi
+        
+        if [ -f "$TEST_FILE" ]; then
+            echo -e "${GREEN}Running test: $TEST_FILE${NC}"
+            npx jest "$TEST_FILE" --runInBand
+        else
+            echo -e "${RED}❌ Test file not found: $TEST_FILE${NC}"
+            echo ""
+            echo "Available test files:"
+            find __tests__ -name "*.test.js" -type f | sed 's/__tests__\//  - /' | sed 's/\.test\.js//'
+            exit 1
+        fi
+    fi
+}
+
+# Run the tests
+run_tests
+
+# Cleanup
+echo ""
+echo -e "${BLUE}Test run completed${NC}"
