@@ -18,7 +18,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '20'
         
     - name: Install dependencies
       run: npm ci
@@ -28,12 +28,9 @@ jobs:
       env:
         NODE_ENV: test
         SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-        SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
         JWT_SECRET: ${{ secrets.JWT_SECRET }}
-        JWT_EXPIRES_IN: ${{ secrets.JWT_EXPIRES_IN }}
         RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-        EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
 
   frontend-tests:
     name: Frontend Tests
@@ -50,7 +47,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '20'
         
     - name: Install dependencies
       run: npm ci
