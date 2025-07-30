@@ -45,7 +45,12 @@ app.get('/health', (req, res) => {
   res.json({ 
     status: 'ok', 
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development'
+    environment: process.env.NODE_ENV || 'development',
+    services: {
+      database: 'connected',
+      email: process.env.SENDGRID_API_KEY || process.env.SMTP_HOST ? 'configured' : 'not configured',
+      jobs: process.env.NODE_ENV !== 'test' ? 'running' : 'disabled'
+    }
   });
 });
 
@@ -61,9 +66,11 @@ app.get('/api', (req, res) => {
     endpoints: {
       health: '/health',
       auth: '/api/auth',
+      users: '/api/users',
       protocols: '/api/protocols',
       groups: '/api/groups',
-      tasks: '/api/tasks'
+      tasks: '/api/tasks',
+      templates: '/api/templates'
     }
   });
 });
@@ -176,6 +183,12 @@ io.on('connection', (socket) => {
   });
 });
 
+// Initialize scheduled jobs
+if (process.env.NODE_ENV !== 'test') {
+  const { initializeJobs } = require('./jobs');
+  initializeJobs();
+}
+
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({ 
@@ -192,6 +205,16 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).json({
     error: err.message || 'Internal Server Error',
     ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+  });
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('SIGTERM signal received: closing HTTP server');
+  const { stopJobs } = require('./jobs');
+  stopJobs();
+  httpServer.close(() => {
+    console.log('HTTP server closed');
   });
 });
 

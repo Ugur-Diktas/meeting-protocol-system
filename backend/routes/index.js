@@ -3,6 +3,7 @@ const router = express.Router();
 
 // Import route modules
 const authRoutes = require('./auth');
+const userRoutes = require('./users');
 const protocolRoutes = require('./protocols');
 const groupRoutes = require('./groups');
 const taskRoutes = require('./tasks');
@@ -10,10 +11,18 @@ const templateRoutes = require('./templates');
 
 // Mount routes
 router.use('/auth', authRoutes);
+router.use('/users', userRoutes);
 router.use('/protocols', protocolRoutes);
 router.use('/groups', groupRoutes);
 router.use('/tasks', taskRoutes);
 router.use('/templates', templateRoutes);
+
+// Admin route for triggering jobs manually (for testing)
+router.post('/admin/jobs/weekly-email', 
+  require('../middleware/auth').authenticate,
+  require('../middleware/auth').requireAdmin,
+  require('../jobs/weeklyTodoEmail').triggerWeeklyEmails
+);
 
 // Test route
 router.get('/test', (req, res) => {
@@ -28,6 +37,14 @@ router.get('/test', (req, res) => {
         'PUT /api/auth/profile',
         'POST /api/auth/change-password',
         'POST /api/auth/logout'
+      ],
+      users: [
+        'GET /api/users/settings',
+        'PUT /api/users/settings',
+        'GET /api/users/settings/notifications',
+        'PUT /api/users/settings/notifications',
+        'GET /api/users/settings/ui-options',
+        'POST /api/users/test-email'
       ],
       groups: [
         'GET /api/groups/my-group',
@@ -67,6 +84,9 @@ router.get('/test', (req, res) => {
         'POST /api/templates',
         'PUT /api/templates/:id',
         'DELETE /api/templates/:id'
+      ],
+      admin: [
+        'POST /api/admin/jobs/weekly-email'
       ]
     }
   });

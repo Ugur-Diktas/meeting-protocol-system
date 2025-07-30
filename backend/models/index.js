@@ -9,6 +9,9 @@ const supabase = createClient(
 
 // Database models with helpful methods
 const db = {
+  // Make supabase client available
+  supabase,
+
   // Groups
   groups: {
     async findById(id) {
@@ -44,7 +47,10 @@ const db = {
     async update(id, updates) {
       const { data, error } = await supabase
         .from('groups')
-        .update(updates)
+        .update({
+          ...updates,
+          updated_at: new Date().toISOString()
+        })
         .eq('id', id)
         .select()
         .single();
@@ -85,10 +91,25 @@ const db = {
       return data;
     },
 
+    async findWithEmailNotifications() {
+      const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .not('group_id', 'is', null)
+        .eq('preferences->>notifications->>weeklyTodoEmail', true);
+      if (error) throw error;
+      return data;
+    },
+
     async create(userData) {
       const { data, error } = await supabase
         .from('users')
-        .insert(userData)
+        .insert({
+          ...userData,
+          preferences: userData.preferences || {},
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        })
         .select()
         .single();
       if (error) throw error;
@@ -96,11 +117,17 @@ const db = {
     },
 
     async update(id, updates) {
+      // Ensure updated_at is set
+      const updateData = {
+        ...updates,
+        updated_at: new Date().toISOString()
+      };
+
       const { data, error } = await supabase
         .from('users')
-        .update(updates)
+        .update(updateData)
         .eq('id', id)
-        .select()
+        .select('*')
         .single();
       if (error) throw error;
       return data;
@@ -142,7 +169,11 @@ const db = {
     async create(templateData) {
       const { data, error } = await supabase
         .from('protocol_templates')
-        .insert(templateData)
+        .insert({
+          ...templateData,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        })
         .select()
         .single();
       if (error) throw error;
@@ -152,7 +183,10 @@ const db = {
     async update(id, updates) {
       const { data, error } = await supabase
         .from('protocol_templates')
-        .update(updates)
+        .update({
+          ...updates,
+          updated_at: new Date().toISOString()
+        })
         .eq('id', id)
         .select()
         .single();
@@ -182,7 +216,6 @@ const db = {
         `)
         .eq('group_id', groupId);
 
-      // Apply filters
       if (filters.status) {
         query = query.eq('status', filters.status);
       }
@@ -222,7 +255,11 @@ const db = {
     async create(protocolData) {
       const { data, error } = await supabase
         .from('protocols')
-        .insert(protocolData)
+        .insert({
+          ...protocolData,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        })
         .select()
         .single();
       if (error) throw error;
@@ -232,18 +269,19 @@ const db = {
     async update(id, updates) {
       // Save current version before updating
       const current = await this.findById(id);
-      if (current) {
+      if (current && updates.updated_by) {
         await db.protocolVersions.create({
           protocol_id: id,
           version: current.version,
           data: current.data,
-          changed_by: updates.updated_by || null,
+          changed_by: updates.updated_by,
           changes: updates.changes || {}
         });
       }
 
       // Increment version
       updates.version = (current?.version || 1) + 1;
+      updates.updated_at = new Date().toISOString();
 
       const { data, error } = await supabase
         .from('protocols')
@@ -261,7 +299,8 @@ const db = {
         .update({
           status: 'finalized',
           finalized_by: userId,
-          finalized_at: new Date().toISOString()
+          finalized_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
         })
         .eq('id', id)
         .select()
@@ -289,7 +328,10 @@ const db = {
     async create(versionData) {
       const { data, error } = await supabase
         .from('protocol_versions')
-        .insert(versionData)
+        .insert({
+          ...versionData,
+          created_at: new Date().toISOString()
+        })
         .select()
         .single();
       if (error) throw error;
@@ -299,34 +341,14 @@ const db = {
 
   // Protocol Attendees
   protocolAttendees: {
-    async upsert(attendeeData) {
-      const { data, error } = await supabase
-        .from('protocol_attendees')
-        .upsert(attendeeData, {
-          onConflict: 'protocol_id,user_id'
-        })
-        .select()
-        .single();
-      if (error) throw error;
-      return data;
-    },
-
-    async findByProtocolId(protocolId) {
-      const { data, error } = await supabase
-        .from('protocol_attendees')
-        .select(`
-          *,
-          user:users(id, name, email, avatar_url)
-        `)
-        .eq('protocol_id', protocolId);
-      if (error) throw error;
-      return data;
-    },
-
     async bulkUpsert(attendees) {
       const { data, error } = await supabase
         .from('protocol_attendees')
-        .upsert(attendees, {
+        .upsert(attendees.map(a => ({
+          ...a,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        })), {
           onConflict: 'protocol_id,user_id'
         })
         .select();
@@ -348,7 +370,6 @@ const db = {
         `)
         .eq('group_id', groupId);
 
-      // Apply filters
       if (filters.assignedTo) {
         query = query.eq('assigned_to', filters.assignedTo);
       }
@@ -359,7 +380,8 @@ const db = {
         query = query.eq('priority', filters.priority);
       }
       if (filters.overdue) {
-        query = query.lt('deadline', new Date().toISOString().split('T')[0])
+        const today = new Date().toISOString().split('T')[0];
+        query = query.lt('deadline', today)
           .neq('status', 'done')
           .neq('status', 'cancelled');
       }
@@ -393,7 +415,11 @@ const db = {
     async create(taskData) {
       const { data, error } = await supabase
         .from('tasks')
-        .insert(taskData)
+        .insert({
+          ...taskData,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        })
         .select()
         .single();
       if (error) throw error;
@@ -403,7 +429,10 @@ const db = {
     async update(id, updates) {
       const { data, error } = await supabase
         .from('tasks')
-        .update(updates)
+        .update({
+          ...updates,
+          updated_at: new Date().toISOString()
+        })
         .eq('id', id)
         .select()
         .single();
@@ -438,7 +467,10 @@ const db = {
     async create(commentData) {
       const { data, error } = await supabase
         .from('task_comments')
-        .insert(commentData)
+        .insert({
+          ...commentData,
+          created_at: new Date().toISOString()
+        })
         .select(`
           *,
           user:users(id, name, email)
@@ -468,7 +500,10 @@ const db = {
     async create(commentData) {
       const { data, error } = await supabase
         .from('protocol_comments')
-        .insert(commentData)
+        .insert({
+          ...commentData,
+          created_at: new Date().toISOString()
+        })
         .select(`
           *,
           user:users(id, name, email)
@@ -494,60 +529,15 @@ const db = {
     }
   },
 
-  // Files
-  files: {
-    async create(fileData) {
-      const { data, error } = await supabase
-        .from('files')
-        .insert(fileData)
-        .select()
-        .single();
-      if (error) throw error;
-      return data;
-    },
-
-    async findByProtocolId(protocolId) {
-      const { data, error } = await supabase
-        .from('files')
-        .select(`
-          *,
-          uploaded_by:users(id, name, email)
-        `)
-        .eq('protocol_id', protocolId)
-        .order('created_at', { ascending: false });
-      if (error) throw error;
-      return data;
-    },
-
-    async findByTaskId(taskId) {
-      const { data, error } = await supabase
-        .from('files')
-        .select(`
-          *,
-          uploaded_by:users(id, name, email)
-        `)
-        .eq('task_id', taskId)
-        .order('created_at', { ascending: false });
-      if (error) throw error;
-      return data;
-    },
-
-    async delete(id) {
-      const { error } = await supabase
-        .from('files')
-        .delete()
-        .eq('id', id);
-      if (error) throw error;
-      return true;
-    }
-  },
-
   // Activity Logs
   activityLogs: {
     async create(logData) {
       const { data, error } = await supabase
         .from('activity_logs')
-        .insert(logData)
+        .insert({
+          ...logData,
+          created_at: new Date().toISOString()
+        })
         .select()
         .single();
       if (error) throw error;

@@ -2,6 +2,32 @@
 const crypto = require('crypto');
 const { supabase } = require('../../models');
 
+// Default preferences for test users
+const DEFAULT_TEST_PREFERENCES = {
+  notifications: {
+    weeklyTodoEmail: true,
+    emailTime: '09:00',
+    timezone: 'UTC'
+  },
+  ui: {
+    theme: 'light',
+    colorScheme: 'blue',
+    language: 'en',
+    dateFormat: 'MM/DD/YYYY',
+    timeFormat: '12h'
+  },
+  tasks: {
+    defaultView: 'list',
+    showCompletedTasks: true,
+    groupByPriority: false
+  },
+  protocols: {
+    autoSave: true,
+    autoSaveInterval: 30,
+    showVersionHistory: true
+  }
+};
+
 // Generate UUID v4 without external dependency
 function generateUUID() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -29,6 +55,28 @@ class TestAuthHelper {
         return existingUser;
       }
       
+      // Merge preferences with defaults
+      const preferences = userData.preferences ? {
+        ...DEFAULT_TEST_PREFERENCES,
+        ...userData.preferences,
+        notifications: {
+          ...DEFAULT_TEST_PREFERENCES.notifications,
+          ...(userData.preferences.notifications || {})
+        },
+        ui: {
+          ...DEFAULT_TEST_PREFERENCES.ui,
+          ...(userData.preferences.ui || {})
+        },
+        tasks: {
+          ...DEFAULT_TEST_PREFERENCES.tasks,
+          ...(userData.preferences.tasks || {})
+        },
+        protocols: {
+          ...DEFAULT_TEST_PREFERENCES.protocols,
+          ...(userData.preferences.protocols || {})
+        }
+      } : DEFAULT_TEST_PREFERENCES;
+      
       // Insert directly into users table
       const { data: user, error } = await supabase
         .from('users')
@@ -38,6 +86,8 @@ class TestAuthHelper {
           name: userData.name || 'Test User',
           group_id: userData.group_id || null,
           role: userData.role || 'member',
+          avatar_url: userData.avatar_url || null,
+          preferences: preferences,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
         })
@@ -77,6 +127,28 @@ class TestAuthHelper {
       });
 
       if (!authError && authData.user) {
+        // Merge preferences with defaults
+        const preferences = userData.preferences ? {
+          ...DEFAULT_TEST_PREFERENCES,
+          ...userData.preferences,
+          notifications: {
+            ...DEFAULT_TEST_PREFERENCES.notifications,
+            ...(userData.preferences.notifications || {})
+          },
+          ui: {
+            ...DEFAULT_TEST_PREFERENCES.ui,
+            ...(userData.preferences.ui || {})
+          },
+          tasks: {
+            ...DEFAULT_TEST_PREFERENCES.tasks,
+            ...(userData.preferences.tasks || {})
+          },
+          protocols: {
+            ...DEFAULT_TEST_PREFERENCES.protocols,
+            ...(userData.preferences.protocols || {})
+          }
+        } : DEFAULT_TEST_PREFERENCES;
+
         // Create user profile
         const { data: profile, error: profileError } = await supabase
           .from('users')
@@ -85,7 +157,9 @@ class TestAuthHelper {
             email,
             name: userData.name || 'Test User',
             group_id: userData.group_id || null,
-            role: userData.role || 'member'
+            role: userData.role || 'member',
+            avatar_url: userData.avatar_url || null,
+            preferences: preferences
           })
           .select()
           .single();
